@@ -1,0 +1,19 @@
+{
+  "name": "bipa",
+  "displayName": "Bipa",
+  "version": "0.1.0",
+  "description": "View Bipa balances, account details, Pix keys, limits, portfolio summaries and market prices with read-only access.",
+  "author": {
+    "name": "Bipa",
+    "url": "https://bipa.app"
+  },
+  "homepage": "https://agents.bipa.app/docs/claude-readonly",
+  "repository": "https://github.com/bipa-app/claude-plugin",
+  "license": "MIT",
+  "keywords": ["finance", "bipa", "brazil", "pix", "balances", "portfolio"],
+  "icon": "./assets/bipa-logo.png",
+  "documentationUrl": "https://agents.bipa.app/docs/claude-readonly",
+  "supportUrl": "https://suporte.bipa.app/hc/pt-br",
+  "privacyPolicyUrl": "https://suporte.bipa.app/hc/pt-br/articles/36305196684315",
+  "termsOfServiceUrl": "https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa"
+}
