@@ -12,5 +12,8 @@
   "license": "MIT",
   "keywords": ["finance", "bipa", "brazil", "pix", "balances", "portfolio"],
   "icon": "./assets/bipa-logo.png",
-  "privacyPolicyUrl": "https://suporte.bipa.app/hc/pt-br/articles/36305196684315"
+  "documentationUrl": "https://agents.bipa.app/docs/claude-readonly",
+  "supportUrl": "https://suporte.bipa.app/hc/pt-br",
+  "privacyPolicyUrl": "https://suporte.bipa.app/hc/pt-br/articles/36305196684315",
+  "termsOfServiceUrl": "https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa"
 }
