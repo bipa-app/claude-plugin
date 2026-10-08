@@ -2,7 +2,7 @@
   "name": "bipa",
   "displayName": "Bipa",
   "version": "0.1.0",
-  "description": "View Bipa balances, account details, Pix keys, limits, portfolio summaries and market prices with read-only access.",
+  "description": "Ask Claude about your Bipa balances, Bitcoin and USDT portfolio, Pix keys, limits and prices, right in the chat.",
   "author": {
     "name": "Bipa",
     "url": "https://bipa.app"
