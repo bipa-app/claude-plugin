@@ -13,14 +13,14 @@ Ask Claude about your money at Bipa. See your balance in reais, Bitcoin and USDT
 
 Claude can only look at your data. It can't send Pix, pay bills or buy and sell crypto. When you connect, you sign in with Bipa and choose what Claude can see: your financial data, your account details, or both. Your CPF or CNPJ is masked in your account details. Transaction history and statements aren't included.
 
-You need a Bipa account to connect. To look around first, a demo with a fictional account needs no sign-in: <https://mcp.bipa.app/demo>.
+Bipa's prices work without an account. To see your own money, connect your Bipa account; if you don't have one yet, you can open it from the sign-in page. To look around first, a demo with a fictional account needs no sign-in: <https://mcp.bipa.app/demo>.
 
 ## What's inside
 
-- **A connection to Bipa's read-only server**, `https://mcp.bipa.app/readonly/mcp`, declared in `.mcp.json`. You sign in with Bipa (OAuth) and grant `financial:read` (balances, limits, portfolio, prices), `account:read` (account details, Pix and deposit keys) or both.
+- **A connection to Bipa's read-only server**, `https://mcp.bipa.app/readonly/mcp`, declared in `.mcp.json`. Prices answer without signing in. For anything else, Claude asks you to sign in with Bipa (OAuth) and grant `financial:read` (balances, limits, portfolio, prices), `account:read` (account details, Pix and deposit keys) or both.
 - **The `bipa-readonly` skill**, in Portuguese, which tells Claude which Bipa tool answers each question and how to present the result.
 
-The plugin runs no local code, hooks or scripts. It sends nothing anywhere except that Bipa server, and only when you ask about your Bipa account.
+The plugin runs no local code, hooks or scripts. It sends nothing anywhere except that Bipa server, and only when you ask about Bipa's prices or your account.
 
 ## Privacy and support
 
@@ -43,6 +43,8 @@ Experimente perguntar:
 - "Quais são meus limites de Pix?"
 
 O Claude só consulta os seus dados: não envia Pix, não paga contas e não compra nem vende criptomoedas. Ao conectar, você entra com a sua conta Bipa e escolhe o que ele pode ver: dados financeiros, dados da conta ou ambos. O CPF ou CNPJ aparece mascarado nos dados da conta. Extratos e histórico de transações não estão incluídos.
+
+As cotações funcionam sem conta. Para ver o seu dinheiro, conecte a sua conta Bipa; se você ainda não tem conta, pode abrir uma na tela de login.
 
 O plugin conecta apenas ao servidor somente leitura da Bipa (`https://mcp.bipa.app/readonly/mcp`) e não executa código local, hooks nem scripts.
 

@@ -1,7 +1,7 @@
 {
   "name": "bipa",
   "displayName": "Bipa",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Ask Claude about your Bipa balances, Bitcoin and USDT portfolio, Pix keys, limits and prices, right in the chat.",
   "author": {
     "name": "Bipa",
