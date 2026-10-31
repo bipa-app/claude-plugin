@@ -48,6 +48,16 @@ As cotações funcionam sem conta. Para ver o seu dinheiro, conecte a sua conta 
 
 O plugin conecta apenas ao servidor somente leitura da Bipa (`https://mcp.bipa.app/readonly/mcp`) e não executa código local, hooks nem scripts.
 
+## Reviewer access
+
+After the hosted reviewer gateway is deployed, install this plugin with its existing
+`https://mcp.bipa.app/readonly/mcp` URL and OAuth enabled. First sign in at the
+[private reviewer URL](https://mcp.bipa.app/readonly/oauth/reviewer) with the supplied
+credentials, then connect the plugin in the same browser within ten minutes and select
+**Connect fictional account**. Normal connections go straight to Bipa's customer login.
+No mobile app, SMS, email verification or URL replacement is required for review.
+See [REVIEWING.md](REVIEWING.md) for test cases and the separate policy clarification.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
