@@ -6,13 +6,14 @@ been verified. Do not claim in-app testing or policy approval from this document
 ## Access
 
 - MCP URL: https://mcp.bipa.app/readonly/mcp. Keep OAuth enabled and the installed URL unchanged.
-- Login information: https://mcp.bipa.app/readonly/oauth. Start OAuth from Claude's Connect action.
+- Private login URL: https://mcp.bipa.app/readonly/oauth/reviewer.
 - Tenant: not applicable.
 - Username/password: supplied privately in the submission, never in this repository or chat.
-- Choose **Reviewer demo account**, enter the credentials and click **Connect fictional account**.
-- Do not choose **Continue with my Bipa account**, which requires a real account.
-- No mobile app, SMS, email verification, account creation or additional setup is required.
-- Reconnect with the same credentials after expiry or a server restart.
+- Open the private login URL and enter the reviewer credentials before connecting the plugin.
+- Return to Claude, select Connect in the same browser within ten minutes, then confirm **Connect fictional account**.
+- Normal connections go directly to Bipa's customer login. Visiting the private URL without signing in does not enable the demo.
+- No mobile app, SMS, email verification or account creation is required.
+- The private browser permission is consumed by one connection or expires after ten minutes. Before each new connection, sign in privately again; existing token refresh continues normally.
 
 Standard OAuth discovery uses https://mcp.bipa.app/readonly as its issuer, with metadata
 at https://mcp.bipa.app/.well-known/oauth-authorization-server/readonly. Registration stays
@@ -32,7 +33,7 @@ at https://api.bipa.app/oauth/register. The reviewer grants both `financial:read
 | Show my balance at another bank. | Explain that only this Bipa account is connected |
 | Buy Bitcoin for me. | Explain that trading is unavailable; no order placed |
 
-Run each of the 18 data/widget tools, including tickers and BTC/USDT price charts. Every
+Run each of the 21 data/widget tools, including tickers and BTC/USDT price charts. Every
 result is labeled as fictional. Prices and portfolio examples use a fixed 7 October 2026
 snapshot, not current quotes. Validate widgets inside Claude, refresh/reconnect, and the
 negative cases before confirming the portal's testing declaration. The public `/demo/mcp`
