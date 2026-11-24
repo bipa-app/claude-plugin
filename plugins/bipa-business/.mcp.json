@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "bipa-business": {
+      "type": "http",
+      "url": "https://mcp.bipa.app/business/connector/mcp"
+    }
+  }
+}

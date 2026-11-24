@@ -1,0 +1,27 @@
+{
+  "name": "bipa-business",
+  "displayName": "Bipa Business",
+  "version": "0.1.0",
+  "description": "Read your company's Bipa Business finances, create payment links and Pix charges, organize records and follow account opening, without moving money.",
+  "author": {
+    "name": "Bipa",
+    "url": "https://bipa.app"
+  },
+  "homepage": "https://agents.bipa.app/docs/business",
+  "repository": "https://github.com/bipa-app/claude-plugin",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "bipa",
+    "brazil",
+    "business",
+    "pix",
+    "receiving",
+    "records"
+  ],
+  "icon": "./assets/bipa-logo.png",
+  "documentationUrl": "https://agents.bipa.app/docs/business",
+  "supportUrl": "https://suporte.bipa.app/hc/pt-br",
+  "privacyPolicyUrl": "https://suporte.bipa.app/hc/pt-br/articles/36305196684315",
+  "termsOfServiceUrl": "https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa"
+}
