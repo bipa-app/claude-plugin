@@ -1,13 +1,13 @@
 {
   "name": "bipa-business",
   "displayName": "Bipa Business",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Read your company's Bipa Business finances, create payment links and Pix charges, organize records and follow account opening, without moving money.",
   "author": {
     "name": "Bipa",
     "url": "https://bipa.app"
   },
-  "homepage": "https://agents.bipa.app/docs/business",
+  "homepage": "https://business.bipa.app",
   "repository": "https://github.com/bipa-app/claude-plugin",
   "license": "MIT",
   "keywords": [
