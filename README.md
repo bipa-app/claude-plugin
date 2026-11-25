@@ -5,7 +5,7 @@ This repository contains separate packages for personal and Business accounts.
 | Plugin | Package | Guide |
 | --- | --- | --- |
 | Bipa | [`plugins/bipa`](plugins/bipa) | [Personal account setup](https://agents.bipa.app/docs/claude) |
-| Bipa Business | [`plugins/bipa-business`](plugins/bipa-business) | [Business setup](https://agents.bipa.app/docs/business/claude) |
+| Bipa Business | [`plugins/bipa-business`](plugins/bipa-business) | [Business setup](https://agents.bipa.app/docs/business/claude-code) |
 
 Submit each package folder separately to the Claude directory. The repository root is not an installable plugin: combining the packages makes the directory scan encounter nested plugin manifests.
 
