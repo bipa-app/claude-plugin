@@ -1,18 +1,25 @@
 {
   "name": "bipa",
   "displayName": "Bipa",
-  "version": "0.2.1",
-  "description": "Ask Claude about your Bipa balances, Bitcoin and USDT portfolio, Pix keys, limits and prices, right in the chat.",
+  "version": "0.3.0",
+  "description": "Ask Claude about your Bipa account, transactions and portfolio, receive Pix and request payments with explicit permissions.",
   "author": {
     "name": "Bipa",
     "url": "https://bipa.app"
   },
-  "homepage": "https://agents.bipa.app/docs/claude-readonly",
+  "homepage": "https://agents.bipa.app/docs/claude",
   "repository": "https://github.com/bipa-app/claude-plugin",
   "license": "MIT",
-  "keywords": ["finance", "bipa", "brazil", "pix", "balances", "portfolio"],
+  "keywords": [
+    "finance",
+    "bipa",
+    "brazil",
+    "pix",
+    "balances",
+    "portfolio"
+  ],
   "icon": "./assets/bipa-logo.png",
-  "documentationUrl": "https://agents.bipa.app/docs/claude-readonly",
+  "documentationUrl": "https://agents.bipa.app/docs/claude",
   "supportUrl": "https://suporte.bipa.app/hc/pt-br",
   "privacyPolicyUrl": "https://suporte.bipa.app/hc/pt-br/articles/36305196684315",
   "termsOfServiceUrl": "https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa"

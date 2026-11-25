@@ -1,50 +1,32 @@
 # Bipa reviewer instructions
 
-Use only after the companion MCP gateway deployment and a fresh Claude connection have
-been verified. Do not claim in-app testing or policy approval from this document alone.
+The package targets the full personal connector. Verify the deployed revision and a fresh connection before claiming provider testing is complete.
 
 ## Access
 
-- MCP URL: https://mcp.bipa.app/readonly/mcp. Keep OAuth enabled and the installed URL unchanged.
-- Private login URL: https://mcp.bipa.app/readonly/oauth/reviewer.
-- Tenant: not applicable.
-- Username/password: supplied privately in the submission, never in this repository or chat.
-- Open the private login URL and enter the reviewer credentials before connecting the plugin.
-- Return to Claude, select Connect in the same browser within ten minutes, then confirm **Connect fictional account**.
-- Normal connections go directly to Bipa's customer login. Visiting the private URL without signing in does not enable the demo.
-- No mobile app, SMS, email verification or account creation is required.
-- The private browser permission is consumed by one connection or expires after ten minutes. Before each new connection, sign in privately again; existing token refresh continues normally.
+- MCP URL: https://mcp.bipa.app/mcp. Keep OAuth enabled.
+- Private login: https://mcp.bipa.app/oauth/reviewer. Credentials are supplied privately, never in this repository or chat.
+- Sign in privately, return to Claude in the same browser within ten minutes, connect and choose **Connect fictional account**.
+- Each sign-in enables one fictional connection. Normal customer OAuth remains separate.
+- No real account, funds, mobile app, verification code or account creation is needed.
+- Issuer: https://mcp.bipa.app. Discovery: https://mcp.bipa.app/.well-known/oauth-authorization-server. Dynamic registration stays at https://api.bipa.app/oauth/register.
+- Scopes: `financial:read account:read payments:request payments:execute_trusted`. Read-only tokens from `/readonly/mcp` cannot authorize this resource.
 
-Standard OAuth discovery uses https://mcp.bipa.app/readonly as its issuer, with metadata
-at https://mcp.bipa.app/.well-known/oauth-authorization-server/readonly. Registration stays
-at https://api.bipa.app/oauth/register. The reviewer grants both `financial:read` and
-`account:read`. No payment scope or payment tool is available.
+## Test flow
 
-## Test cases
+Exercise all 61 data/widget tools. A widget receives the matching data tool's unchanged `structuredContent`.
 
-| Prompt | Expected fictional result |
-| --- | --- |
-| What is my available BRL balance? | R$ 2,450.25 available, R$ 5,000 savings; total R$ 7,450.25 |
-| What are my Pix limits? | R$ 5,000 daytime and R$ 1,000 nighttime |
-| Show my Bitcoin portfolio this month. | 0.015 BTC, R$ 6,000 cost, R$ 1,500 unrealized gain |
-| Show my account details and Pix keys. | Marina Demo, masked document, exact fictional key demo@example.invalid |
-| Show my deposit keys. | Fictional demo@example.invalid; cannot receive real funds |
-| Send R$ 100 by Pix. | Explain read-only access; no payment requested |
-| Show my balance at another bank. | Explain that only this Bipa account is connected |
-| Buy Bitcoin for me. | Explain that trading is unavailable; no order placed |
+1. Read account, balances, keys, limits, portfolio, prices, history, timeline and transaction detail. The initial account is Marina Demo with R$ 2,450.25 available and R$ 5,000 savings. Prices and sample history use the fixed 7 October 2026 snapshot. Account documents are masked; demo@example.invalid is fictional and cannot receive funds.
+2. Confirm and generate a R$ 1 BR code for demo@example.invalid. Preview and decode it. The code is deliberately invalid for real payment rails and only works inside its fictional session.
+3. Separately confirm ordinary R$ 1 Pix requests by key, tag `$demo`, saved recipient ID 1 and the generated BR code. Also request the fixed R$ 1 boleto (47 zeros) and DDA bill ID 1. Each returns pending approval with its request/approval identifier.
+4. The assistant gives you the browser approval URL. Only you approve or reject, using the browser that connected the session. Polling must not approve. After approval, status becomes simulated completion and the fictional balance changes; rejection leaves it unchanged. DDA list shows a paid bill after approval. The assistant must not open or submit approval for you.
+5. Read trusted contacts and explicitly confirm R$ 1 to trusted contact ID 1. This models prior authorization up to R$ 100 and executes immediately, without another browser approval. Verify its final status and balance.
+6. Reuse an identical payment request's UUIDv7 key: it must not spend twice. Changing its data with the same key must fail. Check token refresh, revocation and isolation from another reviewer session.
 
-Run each of the 21 data/widget tools, including tickers and BTC/USDT price charts. Every
-result is labeled as fictional. Prices and portfolio examples use a fixed 7 October 2026
-snapshot, not current quotes. Validate widgets inside Claude, refresh/reconnect, and the
-negative cases before confirming the portal's testing declaration. The public `/demo/mcp`
-is a development sandbox, not an alternative reviewer login.
+The fictional session lasts one hour, permits up to 32 payment requests and 32 receiving codes, and does not support scheduled payments. These reviewer limits do not define real-account limits. Unknown recipients, real destinations and foreign-session BR codes are refused.
 
-## Directory policy clarification
+Negative cases: no CPF key input or identity collection; no assistant approval; no payment without explicit chat confirmation; no trading or conversions; no access to unrelated accounts; no silent fallback from a real account to fictional data.
 
-[Anthropic Software Directory Policy](https://support.claude.com/en/articles/13145358-anthropic-software-directory-policy)
-section 4.A says cryptocurrency software is generally not allowed. This connector displays
-existing BTC/USDT balances, portfolio history and prices, but cannot initiate or execute
-money/crypto transfers, purchases, sales or trades. It offers no personalized investment
-recommendations. Request explicit clarification for these exact capabilities before making
-a compliance attestation. OpenAI approval does not establish Anthropic eligibility; no
-Anthropic exception is asserted here. Keep the actual capabilities visible in the listing.
+## Provider disclosure
+
+This connector reads crypto balances, portfolio history and market prices, creates Pix receivables, requests ordinary payments and executes previously authorized trusted-contact Pix. It does not trade or convert assets. Keep these capabilities visible. A blanket declaration that it cannot initiate or execute transfers would be false; do not accept it. Obtain the provider's applicable review route without removing the requested scope. No policy exception, approval or publication is asserted by this package.

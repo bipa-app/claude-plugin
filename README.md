@@ -1,62 +1,47 @@
 # Bipa
 
-Ask Claude about your money at Bipa. See your balance in reais, Bitcoin and USDT, how your portfolio did today, this month or this year, Bitcoin and USDT prices on Bipa with charts, your Pix limits, and your Pix and deposit keys when you need to share them. Balances, portfolio results and prices show up as Bipa cards right in the chat.
+Ask Claude about your money at Bipa. See balances, transactions, portfolio results, prices, Pix keys and limits. Generate Pix codes to receive money and request Pix, boleto and DDA payments. When supported, Bipa cards show the results in the chat.
 
 ## Try asking
 
-- "What's my Bipa balance?"
+- "What's my Bipa balance and my last five transactions?"
 - "How did my Bitcoin portfolio do this month?"
-- "How is Bitcoin trading on Bipa today?"
-- "What are my Pix limits?"
+- "Help me create a Pix code to receive R$ 100."
+- "Help me request a Pix payment and follow its approval."
 
-## Your money stays put
+## You choose the permissions
 
-Claude can only look at your data. It can't send Pix, pay bills or buy and sell crypto. When you connect, you sign in with Bipa and choose what Claude can see: your financial data, your account details, or both. Your CPF or CNPJ is masked in your account details. Transaction history and statements aren't included.
+The connection uses Bipa OAuth at `https://mcp.bipa.app/mcp`. Choose separate permissions for financial data (`financial:read`), account details (`account:read`), payment requests (`payments:request`) and previously authorized trusted-contact Pix (`payments:execute_trusted`). Tools depend on the permissions you grant.
 
-Bipa's prices work without an account. To see your own money, connect your Bipa account; if you don't have one yet, you can open it from the sign-in page. To look around first, a demo with a fictional account needs no sign-in: <https://mcp.bipa.app/demo>.
+Ordinary Pix, boleto and DDA requests wait for your approval in the Bipa app. Claude cannot approve them for you. A Pix to a previously authorized trusted contact can execute immediately within the existing limits, after your explicit confirmation in chat. A pending or approved request is not proof of payment completion; check its final status.
+
+Account documents are masked. The hosted connector rejects CPF Pix-key inputs; use an email, phone, CNPJ, random key, Bipa tag or existing recipient ID. Registered Pix keys remain complete when read. Do not share passwords, verification codes or identity documents in chat. The personal connector does not buy, sell or convert assets, place investment orders or move savings.
+
+Existing connections to `/readonly/mcp` keep their read-only permissions. Connecting to the full endpoint requires a new authorization. If you do not have a Bipa account, you can open one from Bipa's sign-in page.
 
 ## What's inside
 
-- **A connection to Bipa's read-only server**, `https://mcp.bipa.app/readonly/mcp`, declared in `.mcp.json`. Prices answer without signing in. For anything else, Claude asks you to sign in with Bipa (OAuth) and grant `financial:read` (balances, limits, portfolio, prices), `account:read` (account details, Pix and deposit keys) or both.
-- **The `bipa-readonly` skill**, in Portuguese, which tells Claude which Bipa tool answers each question and how to present the result.
+- The full Bipa MCP connection in `.mcp.json`.
+- The Portuguese `bipa` skill, which explains tool selection, confirmation, payment status, privacy and widgets.
 
-The plugin runs no local code, hooks or scripts. It sends nothing anywhere except that Bipa server, and only when you ask about Bipa's prices or your account.
+The plugin runs no local code, hooks or scripts. It communicates with the declared Bipa MCP server and its OAuth services.
 
 ## Privacy and support
 
-- Privacy policy: <https://suporte.bipa.app/hc/pt-br/articles/36305196684315>
-- Terms of use: <https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa>
-- Help center: <https://suporte.bipa.app/hc/pt-br>
-- Setup guide: <https://agents.bipa.app/docs/claude-readonly>
-
----
+- [Privacy policy](https://suporte.bipa.app/hc/pt-br/articles/36305196684315)
+- [Terms of use](https://suporte.bipa.app/hc/pt-br/articles/55072595716507-Termos-de-uso-aplicativo-Bipa)
+- [Help center](https://suporte.bipa.app/hc/pt-br)
+- [Setup guide](https://agents.bipa.app/docs/claude)
 
 ## Em português
 
-Pergunte ao Claude sobre o seu dinheiro na Bipa. Veja seu saldo em reais, Bitcoin e USDT, o desempenho da sua carteira hoje, no mês ou no ano, as cotações de Bitcoin e USDT na Bipa com gráficos, seus limites de Pix e suas chaves Pix e de depósito quando precisar compartilhá-las.
+Consulte sua conta Bipa no Claude: saldos, extrato, carteira, cotações, chaves Pix e limites. Gere códigos Pix para receber e solicite Pix, boletos e pagamentos DDA. Pedidos comuns aguardam sua aprovação no app Bipa; o Claude não aprova por você. Pix para contatos de confiança previamente autorizados pode executar imediatamente dentro dos limites existentes, após sua confirmação explícita na conversa.
 
-Experimente perguntar:
-
-- "Qual é o meu saldo na Bipa?"
-- "Como foi minha carteira de Bitcoin neste mês?"
-- "Quanto está o Bitcoin na Bipa hoje?"
-- "Quais são meus limites de Pix?"
-
-O Claude só consulta os seus dados: não envia Pix, não paga contas e não compra nem vende criptomoedas. Ao conectar, você entra com a sua conta Bipa e escolhe o que ele pode ver: dados financeiros, dados da conta ou ambos. O CPF ou CNPJ aparece mascarado nos dados da conta. Extratos e histórico de transações não estão incluídos.
-
-As cotações funcionam sem conta. Para ver o seu dinheiro, conecte a sua conta Bipa; se você ainda não tem conta, pode abrir uma na tela de login.
-
-O plugin conecta apenas ao servidor somente leitura da Bipa (`https://mcp.bipa.app/readonly/mcp`) e não executa código local, hooks nem scripts.
+Você escolhe permissões separadas para consultas, pedidos de pagamento e execução para contatos de confiança. Os documentos da conta ficam mascarados e CPF não é aceito como chave de entrada no chat. As chaves Pix consultadas permanecem completas. O conector pessoal não compra, vende ou converte ativos, não cria ordens de investimento nem movimenta o cofrinho.
 
 ## Reviewer access
 
-After the hosted reviewer gateway is deployed, install this plugin with its existing
-`https://mcp.bipa.app/readonly/mcp` URL and OAuth enabled. First sign in at the
-[private reviewer URL](https://mcp.bipa.app/readonly/oauth/reviewer) with the supplied
-credentials, then connect the plugin in the same browser within ten minutes and select
-**Connect fictional account**. Normal connections go straight to Bipa's customer login.
-No mobile app, SMS, email verification or URL replacement is required for review.
-See [REVIEWING.md](REVIEWING.md) for test cases and the separate policy clarification.
+Keep the installed `/mcp` endpoint and OAuth enabled. First sign in at the [private reviewer page](https://mcp.bipa.app/oauth/reviewer) with the supplied credentials, then connect in the same browser within ten minutes and choose **Connect fictional account**. No mobile app or verification code is needed. Normal customer authorization stays separate. See [REVIEWING.md](REVIEWING.md) for the full fictional test flow and policy disclosure. Repository version is not proof of deployment, directory approval or publication.
 
 ## License
 
