@@ -8,17 +8,18 @@ Create and stop payment links, create, send and cancel Pix charges, request depo
 
 - “Quanto a empresa tem em caixa?”
 - “Quais pedidos de pagamento estão esperando aprovação?”
+- “Solicite um Pix de R$ 10 para maria.souza@example.invalid.”
 - “Crie um link de pagamento de R$ 450 por Pix para o pedido 1042, para um pagamento.”
 - “Quais contas a pagar estão em aberto?”
 - “O que falta para abrir a conta da empresa e quem precisa fazer cada etapa?”
 
 ## Connection and permissions
 
-A company member signs in with Bipa OAuth, chooses the account and grants the permissions needed: `financial:read`, `account:read`, `receiving:manage` and/or `records:write`. A connection for an account that is still opening exposes only its opening status and next-step links. Identity capture, selfies, terms and signatures remain in Bipa Business.
+A company member signs in with Bipa OAuth, chooses the account and grants the permissions needed: `financial:read`, `account:read`, `payments:request`, `conversions:execute`, `receiving:manage`, `savings:manage` and/or `records:write`. A connection for an account that is still opening exposes only its opening status and next-step links. Identity capture, selfies, terms and signatures remain in Bipa Business.
 
 The connection is limited by the member's current permissions. It can be revoked in Bipa Business under Settings, Agents. Reconnect when the host asks; never paste passwords, authentication codes, API keys or tokens into a conversation.
 
-This listed connector cannot request, approve or execute payments, convert or trade assets, or move savings. Its payment links, Pix charges and deposit addresses only receive money. Recording a payable as paid records an external payment; it does not pay the bill.
+The connector can preview, create, cancel and follow payment requests. Member confirmation and the company’s approval policy remain in Bipa Business; the agent cannot approve or directly execute those payments. Conversions, accepted target orders and savings moves execute immediately with the required permissions and explicit confirmation. A Pix charge can store an optional customer name without collecting CPF; email and phone delivery are separate confirmed send operations. Its payment links, Pix charges and deposit addresses receive money; links that convert on receipt require conversions:execute. Recording a payable as paid records an external payment; it does not pay the bill.
 
 ## Data sent to Bipa
 

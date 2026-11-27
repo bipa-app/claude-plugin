@@ -1,9 +1,9 @@
 ---
 name: bipa-business
-description: Consulte saldos, extrato, extratos mensais, pedidos de pagamento, links de pagamento, cobranças Pix, documentos, contas a pagar, chaves Pix, contrapartes, cofrinho e limites de uma conta Bipa Business, crie e desative links de pagamento, crie, envie e cancele cobranças Pix, peça endereços de depósito e organize documentos, categorias e contas a pagar pelo conector MCP, e acompanhe a abertura da conta de uma empresa que ainda não tem conta. O conector não movimenta dinheiro. Use para perguntas e pedidos sobre esses dados e recebimentos da empresa conectada e sobre a abertura da conta.
+description: Consulte saldos, extrato, extratos mensais, pedidos de pagamento, links de pagamento, cobranças Pix, documentos, contas a pagar, chaves Pix, contrapartes, cofrinho e limites de uma conta Bipa Business, crie e desative links de pagamento, crie, envie e cancele cobranças Pix, peça endereços de depósito e organize documentos, categorias e contas a pagar pelo conector MCP, e acompanhe a abertura da conta de uma empresa que ainda não tem conta. Solicite pagamentos que aguardam confirmação e aprovação no Bipa Business; com as permissões específicas e confirmação do usuário, converta ativos, gerencie ordens e movimente o cofrinho. Use para perguntas e pedidos sobre esses dados e recebimentos da empresa conectada e sobre a abertura da conta.
 ---
 
-# Bipa Business: consultas e recebimentos da empresa
+# Bipa Business: finanças da empresa
 
 Use os dados retornados pelo conector para responder ao pedido do usuário. Responda em português do Brasil, salvo preferência diferente do usuário. Consulte somente os dados necessários ao pedido.
 
@@ -12,6 +12,7 @@ Use os dados retornados pelo conector para responder ao pedido do usuário. Resp
 - Servidor: `https://mcp.bipa.app/business/connector/mcp`, transporte Streamable HTTP, autenticação OAuth gerenciada pelo aplicativo que hospeda o conector.
 - Um membro da empresa conecta o conector no Bipa Business e escolhe a conta empresarial. A conexão faz apenas o que esse membro pode fazer hoje e para de funcionar quando ele deixa a empresa ou encerra a conexão em Configurações › Agentes.
 - Permissões: `financial:read` para dados e endereço da empresa, saldos, extrato, pedidos, links, cobranças Pix, cofrinho e limites; `account:read`, que nenhuma ferramenta deste conector usa ainda; `receiving:manage` para criar e desativar links de pagamento, criar, enviar e cancelar cobranças Pix e pedir endereços de depósito; `records:write` para apontar campos errados num documento, ligar documentos a lançamentos, definir categorias e atualizar contas a pagar. Documentos e contas a pagar se leem com `financial:read`. Uma ferramenta sem a permissão necessária responde `insufficient_scope`: explique qual dado está indisponível e deixe o usuário decidir se quer reconectar.
+- Permissões adicionais: `payments:request` para consultar destinatários e criar ou cancelar pedidos de pagamento; `conversions:execute` para cotações, conversões e ordens; `savings:manage` para entradas e saídas do cofrinho. Conexões existentes mantêm as permissões já concedidas; novas permissões exigem reconexão e consentimento do membro.
 - Quando a conexão expirar, oriente o usuário a reconectar a Bipa Business no aplicativo onde ela foi conectada. Não peça senha, código, chave de API ou token na conversa.
 - `bipa_business_whoami` mostra a conta conectada e se a conexão lê dados financeiros. Use-a quando houver dúvida sobre qual empresa está conectada.
 
@@ -33,12 +34,18 @@ Antes de a conta abrir, um membro da empresa pode conectar o conector para acomp
 | Lançamentos do extrato | `bipa_business_statement_entries`, `bipa_business_statement_entry` | Informe o ativo e o período; mostre data, tipo, valor e descrição. Saldo de abertura e fechamento vêm na resposta. |
 | Extratos mensais | `bipa_business_monthly_statements` | Liste os extratos já disponíveis. Este conector não gera extratos novos. |
 | Pedidos de pagamento | `bipa_business_payment_requests`, `bipa_business_payment_request` | Mostre destinatário, valor, quem pediu e o estado. Um membro com `payments:approve` aprova ou recusa no Bipa Business. |
+| Solicitar um Pix ou boleto | `bipa_business_pix_preview`, `bipa_business_boleto_preview`, `bipa_business_payment_request_create` | Leia o destinatário, valor e tarifas, confirme com o usuário e crie com o `preview_id`. O pedido ainda aguarda a confirmação do membro e as aprovações no Bipa Business; não anuncie pagamento concluído. Não peça CPF: use e-mail, celular com +55, chave aleatória, CNPJ, código Pix, tag ou contraparte salva. |
+| Acompanhar ou cancelar um pedido | `bipa_business_payment_request_wait`, `bipa_business_payment_request_cancel` | Uma espera encerrada por tempo não significa pagamento concluído. Confirme antes de cancelar. |
+| Converter ativos | `bipa_business_conversion_quote`, `bipa_business_conversion_create` | Mostre preço, valores e tarifa da cotação. Só execute depois da confirmação explícita, com os termos cotados, `conversion_idempotency_key`, `counter_limit_min_units` e `confirmed_amount`. A conversão é imediata, sem aprovação posterior no Bipa Business. |
+| Criar e aceitar uma ordem de preço-alvo | `bipa_business_target_order_create`, `bipa_business_target_order_accept` | Confirme ativo, lado, valor, preço-alvo e validade antes de criar. Antes de aceitar, confirme a reserva imediata; envie os mesmos termos, a chave emitida, `order_id` e `confirmed_amount`. |
+| Cancelar uma ordem | `bipa_business_order_cancel` | Confirme a ordem. Conversões já realizadas permanecem. |
+| Movimentar o cofrinho | `bipa_business_savings`, `bipa_business_savings_deposit`, `bipa_business_savings_withdraw` | Leia o cofrinho, confirme direção e valor e use a chave de depósito ou saque retornada com `confirmed_amount` igual a `amount_cents`. A movimentação é imediata, sem aprovação posterior. |
 | Links de pagamento | `bipa_business_payment_links`, `bipa_business_payment_link`, `bipa_business_payment_link_payment` | Mostre título, valor, estado e validade. |
-| Criar um link de pagamento | `bipa_business_payment_link_create` | Confirme título, valor, formas de pagamento e se aceita um ou vários pagamentos antes de criar. O link não converte: cada forma de pagamento usa o ativo em que ele liquida. Mostre o endereço da página (termina em `/pay/<page_token>`) e guarde o `idempotency_key`. |
+| Criar um link de pagamento | `bipa_business_payment_link_create` | Confirme título, valor, formas de pagamento e se aceita um ou vários pagamentos antes de criar. Se uma forma de pagamento usa um ativo diferente daquele em que o link liquida, ele converte ao receber e exige `conversions:execute`; confirme também essa conversão. Mostre o endereço da página (termina em `/pay/<page_token>`) e guarde o `idempotency_key`. |
 | Desativar um link de pagamento | `bipa_business_payment_link_deactivate` | Confirme qual link antes. Quem já tem as instruções de pagamento ainda pode pagar. |
 | Endereço de depósito em cripto | `bipa_business_deposit_address_request` | Mostre o ativo, a rede e o endereço exatos. Um endereço `PENDING` ainda não existe: consulte de novo depois. |
 | Cobranças Pix | `bipa_business_pix_charges`, `bipa_business_pix_charge` | Mostre valor, descrição, estado (aberta, paga, cancelada ou expirada), validade e os envios por e-mail ou SMS com seu status. O e-mail ou telefone de cada envio vem mascarado; mostre como veio. |
-| Criar uma cobrança Pix | `bipa_business_pix_charge_create` | Confirme valor, descrição e validade antes de criar. Esta conexão não indica quem paga: qualquer pessoa com o código pode pagar. Mostre o copia e cola (`brcode`) e guarde o `idempotency_key`. |
+| Criar uma cobrança Pix | `bipa_business_pix_charge_create` | Confirme valor, descrição e validade antes de criar. Use `contact_name` para guardar o nome do cliente, sem CPF. O nome não restringe quem paga: qualquer pessoa com o código pode pagar. Criar a cobrança não envia mensagem; use a ferramenta de envio após confirmar o e-mail ou celular. Mostre o copia e cola (`brcode`) e guarde o `idempotency_key`. |
 | Enviar uma cobrança Pix | `bipa_business_pix_charge_send` | Confirme o e-mail ou o celular antes. Uma cobrança tem no máximo 1 envio por SMS e 5 por e-mail. O destino volta mascarado. |
 | Cancelar uma cobrança Pix | `bipa_business_pix_charge_cancel` | Confirme qual cobrança antes. Depois de cancelada, o banco de quem paga não a aceita mais. |
 | Documentos recebidos | `bipa_business_documents`, `bipa_business_document` | Mostre tipo (nota fiscal, boleto, guia, fatura, comprovante), remetente, valor, vencimento e estado. Só um documento `TRUSTED` ou `ACCEPTED` traz o texto do remetente e o arquivo; os demais vêm sem eles. Só um membro aceita documentos, no Bipa Business. |
@@ -58,7 +65,11 @@ Não confunda saldo com dinheiro já comprometido em pedidos de pagamento. Não 
 
 ## Limites desta conexão
 
-Esta conexão não movimenta dinheiro: não solicita, aprova ou recusa pagamentos, não faz pagamentos Pix, não paga boletos, não converte ativos e não movimenta o cofrinho. Links de pagamento, cobranças Pix e endereços de depósito só recebem. Um link criado aqui não converte: cada forma de pagamento usa o ativo em que o link liquida (BRL, se não for informado). Para um pedido que movimenta dinheiro, explique que este conector não faz isso e que a operação é feita no Bipa Business. Não alegue que a operação foi iniciada.
+O agente solicita pagamentos Pix e de boletos; ele nunca os aprova nem os executa diretamente. A confirmação do membro e a política de aprovação da empresa continuam no Bipa Business. Um pedido `PENDING` não é um pagamento feito.
+
+Conversões, aceite de ordens de preço-alvo e movimentações do cofrinho executam imediatamente com suas permissões específicas e a confirmação explícita do usuário. As chaves emitidas pela cotação, ordem ou leitura do cofrinho valem por 30 minutos nesta conexão e só para os termos associados. Em resultado desconhecido, repita com a mesma chave; não gere uma nova operação.
+
+Cobranças Pix, links e endereços de depósito recebem dinheiro. O envio de cobrança por e-mail ou SMS pede que o cliente pague; não debita esse cliente. Não peça CPF ou documento de identidade na conversa.
 
 Uma conta a pagar só é paga por um pedido de pagamento que uma pessoa aprova no Bipa Business; marcar como paga apenas registra um pagamento feito fora da Bipa. Aceitar ou descartar um documento é feito por um membro no Bipa Business.
 
@@ -83,4 +94,5 @@ A página de revisão também conecta a Padaria Aurora Demo Ltda, uma empresa fi
 - “Quais contas ainda estão em aberto?” → `bipa_business_payables` com `UNPAID`.
 - “Coloque o Fornecedor Demo na categoria Insumos” → confirme e use `bipa_business_counterparty_category_set`.
 - “O que falta para abrir a conta da empresa?” → `bipa_business_account_opening`; entregue o link de cada passo do usuário.
-- “Pague este boleto” → explique que este conector não movimenta dinheiro; nenhuma ferramenta deve ser chamada.
+- “Pague este boleto” → prévia, confirmação dos termos, criação do pedido e orientação para confirmar e aprovar no Bipa Business.
+- “Cobre R$ 180 deste cliente por e-mail” → confirme a cobrança, crie-a sem CPF, confirme o destino e envie; informe o estado de envio retornado.
